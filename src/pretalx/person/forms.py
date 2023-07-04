@@ -237,12 +237,12 @@ class SpeakerProfileForm(
                 setattr(self.user, user_attribute, value)
             self.user.save(update_fields=[user_attribute])
 
-        if self.user.get_gravatar:
-            gravatar_cache.apply_async(args=(self.user.pk,))
-
         self.instance.event = self.event
         self.instance.user = self.user
         super().save(**kwargs)
+
+        if self.user.get_gravatar:
+            gravatar_cache.apply_async(args=(self.user.pk,))
 
     class Meta:
         model = SpeakerProfile
